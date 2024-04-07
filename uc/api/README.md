@@ -30,7 +30,7 @@ schema_name = "customer_satisfaction_denmark"
 uc_api.create_schema(catalog_name, schema_name)
 ```
 
-This will create a schema named `curated_customer_satisfaction_denmark` within the catalog `elm_dev` if it exists.
+This will create a schema named `curated_customer_satisfaction_denmark` within the catalog `elm_dev` if it exists. Note that the resulting schema name is pre-fixed with the data layer during creation.
 
 ### Workflow 2: Registering an External Table
 
