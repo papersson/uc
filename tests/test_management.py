@@ -1,13 +1,14 @@
 from unittest import TestCase
-from uc.databricks.http_client import CatalogClient, SecurityGroupClient
+from uc.databricks.http_client import CatalogClient, DatabricksHttpService, SecurityGroupClient
 from uc.management import UnityCatalog
 from uc.utils.scim import StartsWith
 
 class TestUnityCatalogIntegration(TestCase):
     def setUp(self):
         self.unity_catalog = UnityCatalog()
-        self.catalog_client = CatalogClient()
-        self.security_group_client = SecurityGroupClient()
+        databricks_http_service = DatabricksHttpService()
+        self.catalog_client = CatalogClient(databricks_http_service)
+        self.security_group_client = SecurityGroupClient(databricks_http_service)
 
     def test_create_and_delete_catalog_with_groups_integration(self):
         catalog_name = "integration_test_catalog_with_groups"

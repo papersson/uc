@@ -1,12 +1,12 @@
-import os
-from uc.databricks.http_client import CatalogClient, SecurityGroupClient
+from uc.databricks.http_client import CatalogClient, DatabricksHttpService, SecurityGroupClient
 from uc.utils.scim import StartsWith
 
 
 class UnityCatalog:
     def __init__(self):
-        self.catalog_client = CatalogClient()
-        self.security_group_client = SecurityGroupClient()
+        databricks_http_service = DatabricksHttpService()
+        self.catalog_client = CatalogClient(databricks_http_service)
+        self.security_group_client = SecurityGroupClient(databricks_http_service)
 
     def create_catalog(self, catalog_name: str):
         # Create catalog

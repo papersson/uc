@@ -1,13 +1,14 @@
 import os  # Add this import
 from dotenv import load_dotenv  # Add this import
 from unittest import TestCase
-from uc.databricks.http_client import CatalogClient, SecurityGroupClient
+from uc.databricks.http_client import CatalogClient, DatabricksHttpService, SecurityGroupClient
 
 load_dotenv()  # This loads the variables from .env into the environment
 
 class TestCatalogClientIntegration(TestCase):
     def setUp(self):
-        self.client = CatalogClient()
+        databricks_http_service = DatabricksHttpService()
+        self.client = CatalogClient(databricks_http_service)
 
     def test_create_and_delete_catalog_integration(self):
         # Create a test catalog
@@ -20,7 +21,8 @@ class TestCatalogClientIntegration(TestCase):
 
 class TestSecurityGroupClientIntegration(TestCase):
     def setUp(self):
-        self.client = SecurityGroupClient()
+        databricks_http_service = DatabricksHttpService()
+        self.client = SecurityGroupClient(databricks_http_service)
 
     def test_create_and_delete_security_group_integration(self):
         # Create a test security group
