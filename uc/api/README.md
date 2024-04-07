@@ -1,10 +1,9 @@
 # Unity Catalog API Usage Guide
 
-This guide provides examples on how to use the `UnityCatalogApi` class within the `uc/api/api.py` module to interact with Unity Catalog in Databricks. The examples cover creating schemas, registering external tables, and listing files in Azure Data Lake Storage Gen2 (ADLS2) to register as Delta tables.
+This guide provides examples on how to use the `UnityCatalogApi` class within the `uc/api/` module to interact with Unity Catalog in Databricks. The examples cover creating schemas, registering external tables, and listing files in Azure Data Lake Storage Gen2 (ADLS2) to register as Delta tables.
 
 ## Prerequisites
 
-- Databricks environment setup with access to Unity Catalog and ADLS2.
 - The `uc` module must be installed on the cluster.
 - The catalogs are assumed to have been created.
 
@@ -14,7 +13,7 @@ Before using the API, initialize the `UnityCatalogApi` with a `DatabricksContext
 
 ```python
 from pyspark.sql import SparkSession
-from uc.api.api import DatabricksContext, UnityCatalogNameConfig, UnityCatalogApi
+from uc.api import DatabricksContext, UnityCatalogNameConfig, UnityCatalogApi
 
 databricks_context = DatabricksContext(spark)
 name_config = UnityCatalogNameConfig(business_unit="elm", data_layer="curated", environment="dev")
