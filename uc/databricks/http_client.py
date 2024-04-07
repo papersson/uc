@@ -1,5 +1,9 @@
+from typing import Any, Dict, List, Optional
+
 import requests
-from typing import List, Optional, Dict, Any
+
+from uc.utils.scim import SCIMFilter
+
 
 class BaseHttpClient:
     """
@@ -106,14 +110,14 @@ class SecurityGroupClient(BaseHttpClient):
         payload = {"changes": [{"principal": group_name, "add": add_privileges, "remove": []}]}
         return self.send_request('PATCH', f"/api/2.1/unity-catalog/permissions/{securable_type}/{full_name}", payload)
 
-    def fetch_groups(self, filters: Optional[List[str]] = None) -> List[dict]:
+    def fetch_groups(self, filters: Optional[List[SCIMFilter]] = None) -> List[dict]:
         """
         Fetches a list of security groups based on filters.
 
         :param filters: Optional list of filter strings to apply.
         :return: List of dictionaries representing the security groups.
         """
-        filter_str = " and ".join(filters) if filters else None
+        filter_str = " and ".join(filter.build() for filter in filters) if filters else None
         params = {"filter": filter_str} if filter_str else None
         response = self.send_request('GET', "/api/2.0/account/scim/v2/Groups", params=params)
-        return response.json().get('Resources', [])
+        return response.json().get('Resources', []) if response.status_code == 200 else []
