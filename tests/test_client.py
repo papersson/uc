@@ -7,10 +7,7 @@ load_dotenv()  # This loads the variables from .env into the environment
 
 class TestCatalogClientIntegration(TestCase):
     def setUp(self):
-        # Use environment variables for token and instance URL
-        access_token = os.getenv('DATABRICKS_ACCESS_TOKEN')
-        databricks_instance = os.getenv('DATABRICKS_INSTANCE_URL')
-        self.client = CatalogClient(access_token, databricks_instance)
+        self.client = CatalogClient()
 
     def test_create_and_delete_catalog_integration(self):
         # Create a test catalog
@@ -23,9 +20,7 @@ class TestCatalogClientIntegration(TestCase):
 
 class TestSecurityGroupClientIntegration(TestCase):
     def setUp(self):
-        access_token = os.getenv('DATABRICKS_ACCESS_TOKEN')
-        databricks_instance = os.getenv('DATABRICKS_INSTANCE_URL')
-        self.client = SecurityGroupClient(access_token, databricks_instance)
+        self.client = SecurityGroupClient()
 
     def test_create_and_delete_security_group_integration(self):
         # Create a test security group

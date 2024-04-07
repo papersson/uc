@@ -1,3 +1,4 @@
+import os
 from typing import Any, Dict, List, Optional
 
 import requests
@@ -9,13 +10,13 @@ class BaseHttpClient:
     """
     Base HTTP client for sending requests to Databricks APIs.
     """
-    def __init__(self, access_token: str, databricks_instance: str):
+    def __init__(self):
         """
         Initializes the client with authorization and instance details.
-
-        :param access_token: Databricks API access token.
-        :param databricks_instance: Databricks instance URL.
         """
+        access_token = os.getenv('DATABRICKS_ACCESS_TOKEN')
+        databricks_instance = os.getenv('DATABRICKS_INSTANCE_URL')
+
         self.headers = {
             'Authorization': f'Bearer {access_token}',
             'Content-Type': 'application/json',
