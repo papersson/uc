@@ -1,13 +1,22 @@
 import os
-import requests
 from typing import Any, Dict, List, Optional
 
+import requests
+from dotenv import load_dotenv
+
 from uc.utils.scim import SCIMFilter
+
+load_dotenv()
 
 class DatabricksHttpService:
     def __init__(self):
         access_token = os.getenv('DATABRICKS_ACCESS_TOKEN')
         databricks_instance = os.getenv('DATABRICKS_INSTANCE_URL')
+        if access_token is None:
+            raise ValueError("DATABRICKS_ACCESS_TOKEN environment variable is not set.")
+        if databricks_instance is None:
+            raise ValueError("DATABRICKS_INSTANCE_URL environment variable is not set.")
+
 
         self.headers = {
             'Authorization': f'Bearer {access_token}',
@@ -17,6 +26,7 @@ class DatabricksHttpService:
 
     def send_request(self, method: str, endpoint: str, payload: Optional[Dict[str, Any]] = None, params: Optional[Dict[str, str]] = None) -> requests.Response:
         url = f"{self.databricks_instance}{endpoint}"
+        # print(url)
         return requests.request(method, url, headers=self.headers, json=payload, params=params)
     
 
@@ -60,3 +70,18 @@ class SecurityGroupClient:
         params = {"filter": filter_str} if filter_str else None
         response = self.service.send_request('GET', "/api/2.0/account/scim/v2/Groups", params=params)
         return response.json().get('Resources', []) if response.status_code == 200 else []
+    
+class SchemaClient:
+    def __init__(self, databricks_http_service: DatabricksHttpService):
+        self.service = databricks_http_service
+
+    def create_schema(self, catalog_name: str, schema_name: str, comment: str = "", properties: dict = None, storage_root: str = "") -> requests.Response:
+        payload = {
+            "name": schema_name,
+            "catalog_name": catalog_name,
+            # "comment": comment,
+            # "properties": properties if properties is not None else {},
+            # "storage_root": storage_root
+        }
+        endpoint = "/api/2.1/unity-catalog/schemas"
+        return self.service.send_request('POST', endpoint, payload)

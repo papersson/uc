@@ -1,9 +1,5 @@
-import os  # Add this import
-from dotenv import load_dotenv  # Add this import
 from unittest import TestCase
 from uc.databricks.http_client import CatalogClient, DatabricksHttpService, SecurityGroupClient
-
-load_dotenv()  # This loads the variables from .env into the environment
 
 class TestCatalogClientIntegration(TestCase):
     def setUp(self):

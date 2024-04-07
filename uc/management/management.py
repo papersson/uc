@@ -1,4 +1,4 @@
-from uc.databricks.http_client import CatalogClient, DatabricksHttpService, SecurityGroupClient
+from uc.databricks.http_client import CatalogClient, DatabricksHttpService, SchemaClient, SecurityGroupClient
 from uc.utils.scim import StartsWith
 
 
@@ -7,6 +7,9 @@ class UnityCatalog:
         databricks_http_service = DatabricksHttpService()
         self.catalog_client = CatalogClient(databricks_http_service)
         self.security_group_client = SecurityGroupClient(databricks_http_service)
+        self.schema_client = SchemaClient(databricks_http_service)  # Add this line
+
+
 
     def create_catalog(self, catalog_name: str):
         # Create catalog
@@ -34,4 +37,7 @@ class UnityCatalog:
             if catalog_name in group["displayName"].lower():
                 self.security_group_client.delete_security_group(group["id"])
 
-    # The method to assign people or groups to privileges would depend on the implementation details of how people and groups are managed and referenced in your system
+    def create_schema(self, catalog_name: str, schema_name: str, comment: str = "", properties: dict = None, storage_root: str = ""):
+        catalog_name = catalog_name.lower()
+        schema_name = schema_name.lower()
+        self.schema_client.create_schema(catalog_name, schema_name)
