@@ -35,7 +35,7 @@ class UnityCatalogNameConfig:
 
 class DatabricksContext:
     """
-    Encapsulates the Databricks environment setup, providing Spark session and dbutils.
+    Encapsulates the Databricks environment setup, providing Spark session and dbutils. Also validates that the client code is running in a Databricks environment.
     """
     def __init__(self, spark: SparkSession):
         self.spark = spark
@@ -62,6 +62,15 @@ class UnityCatalogApi:
     def __init__(self, databricks_context: DatabricksContext, name_config: UnityCatalogNameConfig):
         self.databricks_context = databricks_context
         self.name_config = name_config
+
+    def create_catalog(self):
+        """Creates a catalog with the specified name, along with its associated security groups and privileges."""
+
+        # Initialize UnityCatalog management class
+        uc = UnityCatalog()
+
+        # Create the catalog
+        uc.create_catalog(f'{self.name_config.business_unit}_{self.name_config.environment}')
 
     def create_schema(self, catalog_name: str, schema_name: str):
         """Creates a schema (pre-fixed with the data layer) within a catalog, ensuring the catalog exists."""
